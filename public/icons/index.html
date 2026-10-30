@@ -98,7 +98,11 @@ function renderFilters() {
   }));
 }
 
-function rowImage(r) { return `<img src="${r.path}" alt="${r.original}" loading="lazy">`; }
+function imagePath(r) {
+  if (!r.path) r.path = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(r.svg);
+  return r.path;
+}
+function rowImage(r) { return `<img src="${imagePath(r)}" alt="${r.original}" loading="lazy">`; }
 function isVector(r){return r.format==='SVG' && !!r.svg;}
 function editableVector(r){return isVector(r) && r.vector && !/#FF5A11|\bwhite\b|#1F1F1F/i.test(r.svg);}
 function configuredSvg(r){
@@ -113,7 +117,7 @@ const imageCache = new Map();
 let previewRevision = 0;
 function imageFor(r) {
   if (!imageCache.has(r.id)) imageCache.set(r.id, new Promise((resolve, reject) => {
-    const image = new Image(); image.onload = () => resolve(image); image.onerror = reject; image.src = r.path;
+    const image = new Image(); image.onload = () => resolve(image); image.onerror = reject; image.src = imagePath(r);
   }));
   return imageCache.get(r.id);
 }
@@ -218,7 +222,7 @@ function openMenu(id, anchor) {
 }
 
 async function assetData(r) {
-  const response = await fetch(r.path);
+  const response = await fetch(imagePath(r));
   if (!response.ok) throw new Error('素材读取失败');
   const blob = await response.blob();
   const bytes = new Uint8Array(await blob.arrayBuffer());
@@ -246,7 +250,7 @@ async function pngBlob(r) {
     canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);
     return await new Promise((resolve,reject)=>canvas.toBlob((result)=>result?resolve(result):reject(new Error('PNG 转换失败')),'image/png'));
   }
-  const response = await fetch(r.path); if (!response.ok) throw new Error('素材读取失败');
+  const response = await fetch(imagePath(r)); if (!response.ok) throw new Error('素材读取失败');
   const blob = await response.blob(); if (blob.type === 'image/png') return blob;
   const image = await createImageBitmap(blob); const canvas = document.createElement('canvas');
   canvas.width=r.width; canvas.height=r.height; canvas.getContext('2d').drawImage(image,0,0); image.close();
