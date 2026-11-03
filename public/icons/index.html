@@ -104,6 +104,20 @@ function imagePath(r) {
 }
 function rowImage(r) { return `<img src="${imagePath(r)}" alt="${r.original}" loading="lazy">`; }
 function isVector(r){return r.format==='SVG' && !!r.svg;}
+const svgLoads = new Map();
+async function ensureSvg(r) {
+  if (r.format !== 'SVG' || r.svg) return;
+  if (!svgLoads.has(r.id)) {
+    svgLoads.set(r.id, fetch(r.path).then((response) => {
+      if (!response.ok) throw new Error('图标源文件加载失败');
+      return response.text();
+    }).then((svg) => { r.svg = svg; }).catch((error) => {
+      svgLoads.delete(r.id);
+      throw error;
+    }));
+  }
+  await svgLoads.get(r.id);
+}
 function editableVector(r){return isVector(r) && r.vector && !/#FF5A11|\bwhite\b|#1F1F1F/i.test(r.svg);}
 function configuredSvg(r){
   if(!isVector(r))return null;
@@ -212,7 +226,7 @@ function openMenu(id, anchor) {
   state.menuId = id;
   document.querySelectorAll('.card-more').forEach((button) => button.setAttribute('aria-expanded', String(button.dataset.menu === id)));
   const menu = $('assetMenu');
-  const row=DATA.find((r)=>r.id===id),hint=isVector(row)?row.vector?'真实矢量':'设计稿含位图':'内嵌位图';
+  const row=DATA.find((r)=>r.id===id),hint=row.format==='SVG'?row.vector?'真实矢量':'设计稿含位图':'内嵌位图';
   menu.innerHTML = `<div class="menu-heading">图标操作</div><button data-action="copy-name" role="menuitem">复制英文名称</button><button data-action="copy-svg" role="menuitem">复制 SVG <small>${hint}</small></button><button data-action="copy-react" role="menuitem">复制 React 代码 <small>${hint}</small></button><button data-action="copy-vue" role="menuitem">复制 Vue 代码 <small>${hint}</small></button><button data-action="copy-png" role="menuitem">复制 PNG</button><div class="menu-divider"></div><button data-action="download-svg" role="menuitem">下载 SVG <small>${hint}</small></button><button data-action="download-png" role="menuitem">下载 PNG</button>`;
   menu.classList.remove('hidden');
   const rect = anchor.getBoundingClientRect();
@@ -235,6 +249,7 @@ function embeddedSvg(r, uri) {
 }
 
 async function pngBlob(r) {
+  await ensureSvg(r);
   if(isVector(r)){
     const url=URL.createObjectURL(new Blob([configuredSvg(r)],{type:'image/svg+xml;charset=utf-8'}));
     let image;
@@ -265,6 +280,7 @@ function downloadBlob(blob, filename) {
 
 async function menuAction(action, r) {
   if(action==='copy-name'){await copy(r.name,'英文名称已复制');return;}
+  await ensureSvg(r);
   const label = {'copy-svg':'SVG','copy-react':'React 代码','copy-vue':'Vue 代码','copy-png':'PNG','download-svg':'SVG','download-png':'PNG'}[action];
   if (action.endsWith('png')) {
     const blob = shouldRenderMono(r) ? await new Promise((resolve,reject)=>monoCanvas(r).then((canvas)=>canvas.toBlob((value)=>value?resolve(value):reject(new Error('PNG 生成失败')),'image/png')).catch(reject)) : await pngBlob(r);
@@ -323,7 +339,9 @@ async function downloadAllIcons(){
   button.disabled=true;const files=[];
   try{
     for(let index=0;index<DATA.length;index++){
-      const row=DATA[index],png=shouldRenderMono(row)?await new Promise((resolve,reject)=>monoCanvas(row).then((canvas)=>canvas.toBlob((blob)=>blob?resolve(blob):reject(new Error('PNG 生成失败')),'image/png')).catch(reject)):await pngBlob(row);
+      const row=DATA[index];
+      await ensureSvg(row);
+      const png=shouldRenderMono(row)?await new Promise((resolve,reject)=>monoCanvas(row).then((canvas)=>canvas.toBlob((blob)=>blob?resolve(blob):reject(new Error('PNG 生成失败')),'image/png')).catch(reject)):await pngBlob(row);
       const bytes=new Uint8Array(await png.arrayBuffer());
       const dataUri=isVector(row)?null:await blobToDataUri(png);
       const exportRow=shouldRenderMono(row)?{...row,width:state.iconSize,height:state.iconSize}:row;
