@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, Check, ChevronDown, ChevronLeft, ChevronRight, Clipboard, Download, Grid2X2, Image, Layers3, Menu, Palette, Type, AppWindow, Shapes, Upload, X } from 'lucide-react';
+import { ArrowUpRight, Box, Check, ChevronDown, ChevronLeft, ChevronRight, Clipboard, Download, Grid2X2, Image, Layers3, Menu, Palette, Type, AppWindow, Shapes, Upload, X, BellRing } from 'lucide-react';
 import './logo-library.css';
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
 
-type Tab = 'logos' | 'app-icons' | 'icons' | 'font';
+type Tab = 'logos' | 'app-icons' | 'icons' | 'font' | 'toast' | 'model-gallery';
 const tabs: { id: Tab; label: string; english: string; icon: typeof Shapes }[] = [
   { id: 'logos', label: 'Logo', english: '品牌标识', icon: Shapes },
   { id: 'app-icons', label: 'App Icon', english: '应用图标', icon: AppWindow },
   { id: 'icons', label: 'Icon', english: '图标资源', icon: Grid2X2 },
   { id: 'font', label: 'Font', english: '字体规范', icon: Type },
+  { id: 'toast', label: 'Toast', english: '提示反馈', icon: BellRing },
+  { id: 'model-gallery', label: '3D 模型预览', english: '模型图集', icon: Box },
 ];
 
 type Logo = { id: string; name: string; english: string; color: string; file: string; surface: 'light' | 'dark'; note: string };
@@ -160,7 +162,7 @@ export default function App() {
     </aside>
     {mobileNavOpen && <button className="mobile-overlay" aria-label="关闭导航" onClick={() => setMobileNavOpen(false)}/>}
     <div className="workspace"><header className="workspace-topbar"><button className="mobile-menu" onClick={() => setMobileNavOpen(true)} aria-label="打开导航"><Menu size={22}/></button><div className="breadcrumb">品牌资源 <ChevronRight size={14}/> <strong>{tabs.find(tab => tab.id === activeTab)?.label}</strong></div><span className="topbar-right">JUJUBIT DESIGN SYSTEM <i/> V1.0</span></header>
-      <main className={`workspace-main ${activeTab === 'font' || activeTab === 'icons' ? 'font-main' : ''}`}>
+      <main className={`workspace-main ${activeTab === 'font' || activeTab === 'icons' || activeTab === 'toast' || activeTab === 'model-gallery' ? 'font-main' : ''}`}>
         {activeTab === 'logos' && <div className="content-page"><div className="page-intro"><div className="eyebrow">JUJUBIT / BRAND ASSETS</div><h1>Logo <span>品牌标识</span></h1><p>从官方 Figma 设计稿导出的四款标准版本。选择合适的颜色，一键复制或下载 SVG、PNG 文件。</p><a className="source-link" href={figmaUrl} target="_blank" rel="noreferrer">查看 Logo 设计源文件 <ArrowUpRight size={15}/></a></div>
           <div className="control-bar"><div className="control-group"><span className="control-label"><Palette size={16}/> 预览背景</span><div className="segmented" role="group" aria-label="预览背景">{(['auto','light','dark'] as const).map((value, i) => <button key={value} className={background === value ? 'selected' : ''} onClick={() => setBackground(value)}>{['智能适配','浅色','深色'][i]}</button>)}</div></div><div className="control-group"><label className="control-label" htmlFor="png-size">PNG 尺寸</label><div className="select-wrap"><select id="png-size" value={scale} onChange={e => setScale(Number(e.target.value))}><option value={1}>1× · 484 × 120 px</option><option value={2}>2× · 968 × 240 px</option><option value={4}>4× · 1935 × 479 px</option></select><ChevronDown size={15}/></div></div></div>
           <div className="logo-grid">{logos.map((logo, index) => <article className="logo-card" key={logo.id}><div className={`logo-preview ${background === 'auto' ? logo.surface : background}`}><span className="preview-index">0{index + 1} / 04</span><img src={logo.file} alt={`JuJuBit ${logo.name} Logo`}/><span className="preview-caption">JUJUBIT® — OFFICIAL WORDMARK</span></div><div className="card-content"><div className="card-title"><div><div className="variant-label"><span className="color-swatch" style={{background: logo.color}}/> {logo.english}</div><h3>{logo.name}</h3></div><span className="file-badge">SVG / PNG</span></div><p>{logo.note}</p><div className="action-grid"><div className="action-row"><span className="format-name"><Layers3 size={16}/> SVG <small>矢量格式</small></span><button disabled={busy} onClick={() => handleSvg(logo,'copy')}><Clipboard size={14}/> 复制</button><button disabled={busy} onClick={() => handleSvg(logo,'download')}><Download size={14}/> 下载</button></div><div className="action-row"><span className="format-name"><Image size={16}/> PNG <small>{scale}× 尺寸</small></span><button disabled={busy} onClick={() => handlePng(logo,'copy')}><Clipboard size={14}/> 复制</button><button disabled={busy} onClick={() => handlePng(logo,'download')}><Download size={14}/> 下载</button></div></div></div></article>)}</div>
@@ -170,6 +172,8 @@ export default function App() {
 </div>}
         {activeTab === 'icons' && <div className="font-frame-wrap"><iframe className="font-frame" title="JuJuBit Icon 图标资源" src={asset("/icons/index.html")}/></div>}
         {activeTab === 'font' && <div className="font-frame-wrap"><iframe className="font-frame" title="JuJuBit Instrument Sans 字体规范" src={asset("/typography/index.html")}/></div>}
+        {activeTab === 'toast' && <div className="font-frame-wrap"><iframe className="font-frame" title="JuJuBit Toast 组件规范" src={asset("/toast-preview/index.html")}/></div>}
+        {activeTab === 'model-gallery' && <div className="font-frame-wrap"><iframe className="font-frame" title="JuJuBit 3D 模型预览" src={asset("/model-gallery/index.html")}/></div>}
       </main>
     </div>{toast && <div className="toast" role="status"><Check size={16}/> {toast}</div>}
   </div>;
