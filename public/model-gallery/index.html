@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f1f1f3">
+<title>Miniature Atlas · 模型预览</title><link rel="stylesheet" href="styles.css">
+<script defer src="catalog.js"></script><script type="module" src="vendor/model-viewer.min.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<div class="workspace">
+  <aside class="library" aria-label="作品列表">
+    <div class="library-tools">
+      <label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.5 15.5 4.8 4.8"/></svg><span class="sr-only">搜索模型</span><input id="search" type="search" placeholder="搜索作品名称或编号" autocomplete="off"></label>
+      <nav id="filters" class="filters" aria-label="模型分类"></nav>
+      <div class="library-count"><span id="filter-title">全部作品</span><span id="result-count">108</span></div>
+    </div>
+    <div id="gallery" class="thumbnail-grid" aria-label="选择作品"></div>
+    <p id="list-empty" class="list-empty" hidden>没有找到匹配的作品</p>
+    <div class="library-footer">选择图片以查看对应的 2D / 3D 预览</div>
+  </aside>
+  <main class="preview" aria-label="作品预览">
+    <div class="preview-toolbar"><div class="preview-identity"><h1 id="title">冰霜之王</h1></div><div class="toolbar-actions"><span id="position" class="position">01 / 108</span><button id="previous" class="tool-button" type="button" aria-label="上一件作品" title="上一件作品">←</button><button id="next" class="tool-button" type="button" aria-label="下一件作品" title="下一件作品">→</button><span class="toolbar-divider" aria-hidden="true"></span><button id="reset" class="tool-button" type="button" aria-label="重置模型视角" title="重置模型视角">↺</button></div></div>
+    <div id="preview-stage" class="preview-stage"><div class="preview-pair">
+      <section class="preview-panel" aria-label="2D 图片预览"><div class="panel-heading"><span><i class="panel-dot image-dot"></i>2D IMAGE</span><span>REFERENCE</span></div><div class="media-frame image-frame"><img id="reference" alt="所选作品的 2D 图片"></div></section>
+      <section class="preview-panel" aria-label="3D 模型预览"><div class="panel-heading"><span><i class="panel-dot model-dot"></i>3D MODEL</span><span>DRAG TO ROTATE</span></div><div class="media-frame model-frame"><model-viewer id="viewer" camera-controls touch-action="pan-y" environment-image="neutral" exposure="1.15" shadow-intensity="0.8" shadow-softness="1" camera-orbit="90deg 80deg auto" interaction-prompt="none" loading="eager" alt="所选作品的可旋转 3D 模型"></model-viewer><a id="download-model" class="download-model" href="#" download aria-label="下载当前 GLB 模型" title="下载当前 GLB 模型"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v3h16v-3"/></svg></a><div id="model-status" class="model-status" aria-live="polite"></div></div></section>
+    </div><p class="stage-hint">在 3D 预览中拖动旋转 · 滚轮或双指缩放</p></div>
+    <div id="preview-empty" class="preview-empty" hidden>没有匹配的作品，请调整搜索或分类。</div>
+  </main>
+</div>
+<script>if(location.protocol==='file:')document.documentElement.classList.add('file-mode')</script><div class="file-notice" role="status">请双击同目录中的 <strong>launch.command</strong> 打开图集，以加载 3D 模型。</div><noscript>请启用 JavaScript 以查看图集。</noscript>
+</body></html>
