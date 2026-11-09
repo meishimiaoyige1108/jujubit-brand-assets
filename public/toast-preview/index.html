@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Toast 组件规范 · 交互预览</title>
+  <style>
+    @font-face{font-family:Instrument;src:url('./assets/InstrumentSans-Regular.otf')}@font-face{font-family:Instrument;src:url('./assets/InstrumentSans-SemiBold.otf');font-weight:600}@font-face{font-family:Instrument;src:url('./assets/InstrumentSans-Bold.otf');font-weight:700}
+    :root{font-family:Instrument,'PingFang SC',Arial,sans-serif;color:#17191c;background:#f4f5f6;font-synthesis:none}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #ff5a11;outline-offset:3px}
+    .app{min-height:100vh}.topbar{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,4vw,64px);background:#fff;border-bottom:1px solid #ebeced}.brand{display:flex;align-items:center;gap:11px;font-size:15px;font-weight:700;letter-spacing:-.02em}.brand-mark{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:#ff5a11;color:#fff;font-size:20px;font-weight:700}.top-meta{color:#8c9096;font-size:12px}.shell{max-width:1500px;margin:auto;padding:42px clamp(24px,4vw,64px) 80px}.hero{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:30px}.eyebrow{color:#ff5a11;font-size:11px;font-weight:700;letter-spacing:.14em}.hero h1{font-size:clamp(34px,4vw,54px);line-height:1.08;letter-spacing:-.045em;margin:10px 0 12px}.hero p{margin:0;color:#73787e;font-size:14px;line-height:1.6}.hero-link{font-size:12px;color:#555c63;border:1px solid #dfe1e3;border-radius:999px;padding:10px 15px;background:#fff;white-space:nowrap;text-decoration:none}.main-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(420px,.85fr);gap:22px;align-items:start}.panel{background:#fff;border:1px solid #e8e9eb;border-radius:22px;box-shadow:0 8px 30px #1c273008}.panel-header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:28px 30px 0}.kicker{color:#9ba0a5;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}.panel h2{font-size:22px;letter-spacing:-.025em;margin:5px 0 0}.panel-sub{color:#999ea4;font-size:12px;margin-top:7px}.live-tag{display:flex;align-items:center;gap:7px;color:#4c555d;font-size:11px;background:#f5f6f7;border-radius:999px;padding:7px 11px}.live-dot{width:6px;height:6px;border-radius:50%;background:#ff5a11}.preview-inner{display:flex;justify-content:center;padding:27px 20px 32px;overflow:hidden}.phone{width:393px;height:852px;position:relative;flex:none;background:#fff;border:7px solid #202225;border-radius:43px;box-shadow:0 25px 50px #141d2733,0 0 0 1px #111;overflow:hidden}.phone-screen{position:absolute;inset:0;border-radius:36px;overflow:hidden;background:#fff}.statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 20px;color:#000;font-size:14px;font-weight:600}.status-icons{display:flex;align-items:center;gap:6px;font-size:13px}.battery{width:22px;height:11px;border:1px solid #111;border-radius:3px;position:relative}.battery:after{content:'';position:absolute;inset:2px;background:#111;border-radius:1px}.battery:before{content:'';position:absolute;width:2px;height:4px;background:#111;right:-4px;top:3px;border-radius:0 2px 2px 0}.phone-head{height:44px;padding:0 20px;display:flex;align-items:center;justify-content:space-between}.phone-head strong{font-size:20px;letter-spacing:-.04em}.head-actions{display:flex;gap:16px;align-items:center}.head-actions img{width:24px;height:24px}.tabs{height:57px;display:flex;align-items:flex-start;gap:0;overflow:hidden;white-space:nowrap;padding-top:16px}.tab{height:36px;min-width:80px;text-align:center;font-size:16px;position:relative}.tab.active{font-weight:700}.tab.active:after{content:'';position:absolute;width:16px;height:2px;border-radius:2px;background:#111;bottom:0;left:calc(50% - 8px)}.feed{height:calc(100% - 145px);overflow:hidden;padding:12px 12px 0}.feed-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:8px;row-gap:12px}.post{min-width:0}.post-art{height:219px;border-radius:20px;background:radial-gradient(circle at 50% 28%,#e0e0e0 0,#aeaeae 53%,#898989 100%);position:relative;overflow:hidden}.post-art img{display:block;position:absolute;object-fit:contain}.post-art.person img{height:112%;width:112%;bottom:-4%;left:-6%}.post-art.alien img{height:84%;width:auto;top:8%;left:50%;transform:translateX(-50%)}.post-meta{height:24px;margin-top:6px;display:flex;align-items:center;gap:3px;padding:0 4px;color:#000;font-size:14px}.avatar{width:24px;height:24px;border-radius:50%;background:#d8fa80;overflow:hidden;display:grid;place-items:center;flex:none}.avatar img{width:80px;height:65px;max-width:none;object-fit:cover;object-position:right bottom;transform:translate(-29px,-20px)}.post-meta strong{font-weight:600;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.like{margin-left:auto;display:flex;align-items:center;gap:2px;color:#979797}.like img{width:20px;height:20px}.like.on{color:#ff5a11}.tabbar{position:absolute;bottom:10px;left:0;right:0;height:79px;display:flex;align-items:center;gap:16px;padding:16px 25px 25px;z-index:2}.tabbar-brand{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff6e0d,#ffb532);box-shadow:0 5px 11px #ff5a1160;flex:none}.tabbar-brand img{width:65px;height:65px}.tabbar-pill{height:62px;border-radius:999px;display:flex;align-items:center;flex:1;background:#ffffffd9;box-shadow:0 5px 15px #0002;border:1px solid #ffffffb8;backdrop-filter:blur(12px)}.navitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:54px;font-size:10px;color:#535353;gap:1px}.navitem.active{border-radius:999px;background:#ededed;color:#ff5a11}.navitem img{width:28px;height:28px;object-fit:contain}.phone-toast-layer{position:absolute;left:8px;right:8px;bottom:101px;z-index:4;display:flex;justify-content:center;pointer-events:none}.phone.no-bar .phone-toast-layer{bottom:95px}.phone.no-bar .tabbar{display:none}.toast{display:flex;align-items:center;gap:4px;width:max-content;max-width:min(100%,377px);min-height:44px;background:#f9f9f9;border:0.5px solid #f2f2f2;border-radius:16px;padding:12px 8px;color:#000;font-size:14px;line-height:20px;pointer-events:auto;opacity:0;transform:translateY(24px)}.toast.enter{animation:toast-cycle 3.5s linear both}.toast-icon{width:24px;height:24px;flex:none}.toast-copy{min-width:0;overflow-wrap:anywhere}.toast.text-only .toast-copy{text-align:center;padding:0 2px}.toast-action{margin-left:6px;padding:0 2px;background:none;border:0;color:#ff5a11;font-size:14px;white-space:nowrap}.toast.error .toast-icon{content:url('./assets/warning-user.svg')}@keyframes toast-cycle{0%{opacity:0;transform:translateY(24px);animation-timing-function:ease-out}5.119%{opacity:1;transform:translateY(0)}80.356%{opacity:1;transform:translateY(0);animation-timing-function:ease-in}85.475%{opacity:0;transform:translateY(16px)}100%{opacity:0;transform:translateY(16px)}}
+    .controls{padding:0 30px 30px}.control-block{border-top:1px solid #eee;padding-top:23px;margin-top:0}.control-title{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:13px}.control-title span:last-child{font-weight:400;color:#a3a7aa}.segmented{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#f5f6f7;padding:5px;border-radius:12px}.segmented button,.status-group button,.device-group button{border:0;background:transparent;border-radius:9px;padding:10px 8px;color:#777d83;font-size:12px}.segmented button.active,.status-group button.active,.device-group button.active{background:#fff;color:#17191c;box-shadow:0 2px 7px #00000012;font-weight:600}.status-group,.device-group{display:flex;gap:7px;flex-wrap:wrap}.status-group button,.device-group button{background:#f5f6f7;padding:9px 13px}.status-group button.active,.device-group button.active{outline:1px solid #e7e8e9}.field{margin-top:22px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:10px}.field input{width:100%;height:42px;border:1px solid #e3e5e7;border-radius:10px;background:#fff;padding:0 12px;font-size:12px;color:#25292c}.controls-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}.phone.large .feed-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.phone.large .post-art{height:186px}.phone.large .phone-toast-layer{left:0;right:0}.phone.large .tabs .tab{min-width:95px}.phone.large .tabbar{max-width:440px;margin:auto}.phone.large .phone-head{padding:0 26px}
+    .spec-panel{padding:28px 30px}.spec-panel .spec-section:first-child{margin-top:0;padding-top:0}.spec-section{margin-top:28px;border-top:1px solid #eee;padding-top:24px}.variant-section{background:#f9f9f9;border-top:0;border-radius:16px;padding:24px 18px}.section-top{display:flex;justify-content:space-between;align-items:center}.section-top h3{margin:0;font-size:15px}.section-top small{font-size:10px;letter-spacing:.1em;color:#9da2a6}.variant-list{display:grid;gap:12px;margin-top:18px}.variant{background:transparent;border-radius:15px;padding:13px}.variant-toast{display:flex;align-items:center;gap:4px;min-height:44px;border:0.5px solid #f2f2f2;border-radius:16px;background:#fff;padding:12px 8px;font-size:14px;line-height:20px}.variant-toast img{height:24px;width:24px;flex:none}.variant-toast span{flex:1}.variant-toast.center span{text-align:center}.variant-toast b{font-weight:400;color:#ff5a11;white-space:nowrap;margin-left:6px}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.metric{padding:15px;border-radius:13px;background:#f7f8f9}.metric strong{display:block;font-size:20px;letter-spacing:-.035em}.metric span{display:block;margin-top:4px;color:#8d9398;font-size:10px}.rule-list{margin:15px 0 0;padding:0;list-style:none}.rule-list li{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid #f1f2f3;font-size:12px}.rule-list li:last-child{border:0}.rule-list span{color:#8e949a}.rule-list strong{font-weight:600;text-align:right}.motion-track{margin-top:18px;background:#f7f8f9;border-radius:12px;padding:15px}.track-bar{height:8px;border-radius:99px;background:linear-gradient(to right,#ffb38d 0 5.1%,#ff5a11 5.1% 80.4%,#ffb38d 80.4% 85.5%,#e4e6e8 85.5%)}.track-labels{display:flex;justify-content:space-between;margin-top:10px;color:#969ba0;font-size:10px}.source-links{display:flex;gap:12px;margin-top:22px}.source-links a{color:#666d74;font-size:11px;text-decoration:none}.source-links a:hover{color:#ff5a11}
+    @media(max-width:1090px){.main-grid{grid-template-columns:1fr}.preview-inner{padding-bottom:30px}.spec-panel{order:2}}@media(max-width:620px){.topbar{height:58px;padding:0 18px}.top-meta{display:none}.shell{padding:30px 14px 60px}.hero{display:block;padding:0 8px}.hero-link{display:inline-block;margin-top:16px}.panel{border-radius:18px}.panel-header,.controls,.spec-panel{padding-left:18px;padding-right:18px}.main-grid{gap:14px}.preview-inner{padding-left:0;padding-right:0}.phone{transform:scale(.87);transform-origin:top center;margin-bottom:-111px}.controls-row{grid-template-columns:1fr}}
+    /* Match the Font section's title area inside the shared brand resources shell. */
+    :root{background:#fff}
+    .shell{max-width:1480px;padding:52px 60px 80px}
+    .hero{align-items:start;margin-bottom:34px}
+    .eyebrow{font-size:12px;font-weight:600;letter-spacing:0;margin-bottom:12px}
+    .hero h1{color:#000;font-size:34px;font-weight:600;line-height:1.25;letter-spacing:0;margin:0 0 14px}
+    .hero p{color:#666;font-size:16px;line-height:1.6}
+    .hero-link{align-self:center;border:0;border-radius:0;padding:0;color:#111;font-size:12px;font-weight:600}
+    .hero-link:hover{color:#ff5a11}
+    @media(max-width:1100px){.shell{padding:40px 32px 80px}}
+    @media(max-width:620px){.shell{padding:28px 24px 40px}.hero{display:block;padding:0}.hero h1{font-size:28px}.hero-link{margin-top:18px}}
+    .phone-stage{width:236px;height:512px;flex:none}.phone-stage.large{width:300px;height:456px}.phone-stage .phone{transform:scale(.6);transform-origin:top left;max-width:none!important}.preview-inner{align-items:flex-start}.controls-row{margin-top:0;margin-bottom:22px}.control-block{border-top:1px solid #eee}.code-section{border-top:1px solid #eee}.code-intro{margin:12px 0 16px;color:#777;font-size:12px;line-height:1.6}.code-intro code{font-family:ui-monospace,SFMono-Regular,monospace}.code-panel{overflow:hidden;border:1px solid #dedede;border-radius:18px;background:#f5f5f5}.code-panel-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;color:#111;font-size:13px;font-weight:600}.copy-code{width:34px;height:34px;border:0;border-radius:6px;background:transparent;color:#111;font-size:22px;line-height:1}.copy-code img{display:block;width:20px;height:20px}.copy-code:hover{background:#e9e9e9}.code-panel pre{max-height:560px;margin:0;padding:14px 20px 24px;overflow:auto;color:#111;font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre;tab-size:2}.copy-status{display:block;min-height:18px;margin-top:8px;color:#666;font-size:11px}
+    @media(max-width:620px){.phone-stage .phone{transform:scale(.6);margin-bottom:0}.preview-inner{padding-left:0;padding-right:0}.code-panel pre{font-size:11px}.controls-row{gap:10px}}
+    @media(prefers-reduced-motion:reduce){.toast.enter{animation:none;opacity:1;transform:none}}
+    /* Desktop layout: phone preview on the left, controls and examples on the right. */
+    .main-grid{grid-template-columns:1fr;gap:22px}
+    .main-grid > .panel:first-child{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);align-items:start}
+    .main-grid > .spec-panel{grid-column:1}
+    .main-grid > .panel:first-child .preview-inner{min-width:0;min-height:566px;padding:27px 20px 32px}
+    .main-grid > .panel:first-child .controls{padding:30px;border-left:1px solid #eee}
+    .main-grid > .panel:first-child .controls .variant-section{margin:0 0 26px;padding:24px 18px;border-top:0}
+    .main-grid > .panel:first-child .controls .variant-list{gap:8px;margin-top:12px}
+    .main-grid > .panel:first-child .controls .variant{padding:8px}
+    .main-grid > .panel:first-child .controls-row{grid-template-columns:1fr;gap:22px;margin-top:0;margin-bottom:24px}
+    .main-grid > .panel:first-child .control-block{margin-top:0}
+    @media(max-width:900px){
+      .main-grid > .panel:first-child{grid-template-columns:1fr}
+      .main-grid > .panel:first-child .controls{border-left:0;border-top:1px solid #eee}
+      .main-grid > .panel:first-child .preview-inner{min-height:0}
+      .main-grid > .panel:first-child .controls-row{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:620px){
+      .main-grid > .panel:first-child .controls-row{grid-template-columns:1fr}
+      .main-grid > .panel:first-child .controls{padding-top:24px}
+    }
+    .spec-panel .code-section{min-width:0;margin:0;padding:0;border-top:0}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main class="shell">
+      <div class="hero"><div><div class="eyebrow">JUJUBIT / TOAST</div><h1>Toast 组件规范</h1><p>轻量反馈，短暂停留。查看结构、尺寸与动画，并在真实页面场景中预览。</p></div><a class="hero-link" href="https://www.figma.com/design/Ebb5amGiVzRO9P4BDljIZc/V-0.6-1.4-APP?node-id=6760-22841" target="_blank" rel="noopener">查看 Figma 设计 ↗</a></div>
+      <div class="main-grid">
+        <section class="panel" aria-label="交互预览">
+          <div class="preview-inner"><div class="phone-stage" id="phoneStage"><div class="phone" id="phone"><div class="phone-screen"><div class="statusbar"><span>9:41</span><div class="status-icons"><span>▂▄▆</span><span>◕</span><span class="battery"></span></div></div><div class="phone-head"><strong>Inspiration</strong><div class="head-actions"><img src="./assets/header-bell.svg" alt="通知"><img src="./assets/header-settings.svg" alt="设置"></div></div><div class="tabs"><div class="tab active">For you</div><div class="tab">Fantasy</div><div class="tab">Pop</div><div class="tab">Realism</div><div class="tab">1:7 figurine</div></div><div class="feed"><div class="feed-grid" id="feedGrid"></div></div><div class="tabbar"><div class="tabbar-brand"><img src="./assets/brand.svg" alt=""></div><div class="tabbar-pill"><div class="navitem active"><img src="./assets/tab-inspiration.svg" alt="">Inspiration</div><div class="navitem"><img src="./assets/tab-cart.svg" alt="">Cart</div><div class="navitem"><img src="./assets/tab-my.svg" alt="">My</div></div></div><div class="phone-toast-layer" aria-live="polite"><div id="toast" class="toast"><img class="toast-icon" src="./assets/success-user.svg" alt=""><span class="toast-copy" id="toastCopy"></span><button class="toast-action" id="toastAction" type="button">Undo</button></div></div></div></div></div></div>
+          <div class="controls"><div class="spec-section variant-section"><div class="section-top"><h3>结构变体</h3></div><div class="variant-list"><div class="variant"><div class="variant-toast"><img src="./assets/success-user.svg" alt=""><span>Thanks for your report. We'll review this creation.</span></div></div><div class="variant"><div class="variant-toast center"><span>Thanks for your report. We'll review this creation.</span></div></div><div class="variant"><div class="variant-toast"><img src="./assets/success-user.svg" alt=""><span>Thanks for your report. We'll review this creation.</span><b>Undo</b></div></div></div></div><div class="controls-row"><div><div class="control-title"><span>提示状态</span></div><div class="status-group" id="statuses"><button data-status="success" class="active">成功</button><button data-status="error">错误</button></div></div><div><div class="control-title"><span>预览设备</span></div><div class="device-group" id="devices"><button data-device="phone" class="active">手机</button><button data-device="large">大屏</button></div></div></div><div class="control-block"><div class="control-title"><span>内容结构</span><span>3 种变体</span></div><div class="segmented" id="variants"><button data-variant="icon" class="active">图标 + 文字</button><button data-variant="text">纯文字</button><button data-variant="action">图标 + 操作</button></div></div><div class="field"><label for="message">提示文案</label><input id="message" value="Thanks for your report. We'll review this creation." maxlength="120"></div></div>
+        </section>
+        <section class="panel spec-panel" aria-label="组件规范">
+
+          <div class="spec-section code-section" id="toast-code"><div class="section-top"><h3>前端代码 · 尺寸与动效</h3></div><p class="code-intro">包含宽度、间距、颜色、位置和 3.5 秒动效，可直接复制到前端项目。大屏预览可将 <code>data-size</code> 改为 <code>large</code>。</p><div class="code-panel"><div class="code-panel-head"><span class="code-label">&lt;/&gt; &nbsp;HTML · CSS · JavaScript</span><button class="copy-code" id="copyToastCode" type="button" aria-label="复制 Toast 前端代码" title="复制代码"><img src="../assets/action-copy.svg" alt=""></button></div><pre><code id="toastCode">&lt;!-- Toast 组件：放在手机页面容器内 --&gt;
+&lt;div class=&quot;toast-host&quot; data-size=&quot;phone&quot; role=&quot;status&quot; aria-live=&quot;polite&quot;&gt;
+  &lt;div class=&quot;jjb-toast&quot;&gt;
+    &lt;img class=&quot;jjb-toast__icon&quot; src=&quot;success-user.svg&quot; alt=&quot;&quot;&gt;
+    &lt;span class=&quot;jjb-toast__copy&quot;&gt;Thanks for your report. We&#x27;ll review this creation.&lt;/span&gt;
+    &lt;button class=&quot;jjb-toast__action&quot; type=&quot;button&quot;&gt;Undo&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+  .toast-host {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 101px; /* 距底栏 12px */
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .toast-host.no-bar { bottom: 95px; }
+  .jjb-toast {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: max-content;
+    max-width: min(100%, 377px);
+    min-height: 44px;
+    padding: 12px 8px;
+    border: 1px solid #f2f2f2;
+    border-radius: 16px;
+    background: #f9f9f9;
+    color: #000;
+    font: 400 14px/20px &quot;Instrument Sans&quot;, sans-serif;
+    pointer-events: auto;
+    overflow-wrap: anywhere;
+  }
+  .toast-host[data-size=&quot;large&quot;] .jjb-toast { max-width: min(100%, 500px); }
+  .jjb-toast__icon { width: 24px; height: 24px; flex: none; }
+  .jjb-toast__copy { min-width: 0; }
+  .jjb-toast__action {
+    margin-left: 6px;
+    border: 0;
+    background: none;
+    color: #ff5a11;
+    font: inherit;
+    white-space: nowrap;
+  }
+  .jjb-toast.is-visible { animation: jjb-toast-cycle 3.5s linear both; }
+  @keyframes jjb-toast-cycle {
+    0% { opacity: 0; transform: translateY(24px); animation-timing-function: ease-out; }
+    5.143% { opacity: 1; transform: translateY(0); }
+    80.286% { opacity: 1; transform: translateY(0); animation-timing-function: ease-in; }
+    85.429%, 100% { opacity: 0; transform: translateY(16px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jjb-toast.is-visible { animation: none; }
+  }
+&lt;/style&gt;
+
+&lt;script&gt;
+  // 每次调用都会重播进入 → 停留 → 退出，总时长 3.5 秒。
+  function showToast(message) {
+    const toast = document.querySelector(&#x27;.jjb-toast&#x27;);
+    toast.querySelector(&#x27;.jjb-toast__copy&#x27;).textContent = message;
+    toast.classList.remove(&#x27;is-visible&#x27;);
+    void toast.offsetWidth;
+    toast.classList.add(&#x27;is-visible&#x27;);
+  }
+&lt;/script&gt;</code></pre></div><span class="copy-status" id="copyToastStatus" role="status" aria-live="polite"></span></div>
+          <div class="source-links"><a href="https://www.figma.com/design/Ebb5amGiVzRO9P4BDljIZc/V-0.6-1.4-APP?node-id=6760-22841" target="_blank" rel="noopener">组件规范 ↗</a><a href="https://www.figma.com/design/Ebb5amGiVzRO9P4BDljIZc/V-0.6-1.4-APP?node-id=6727-24192" target="_blank" rel="noopener">页面预览 ↗</a></div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script>
+    const $=id=>document.getElementById(id);const state={variant:'icon',status:'success',device:'phone'};const toast=$('toast');const feed=$('feedGrid');
+    const posts=['person','alien','alien','person','alien','person','person','alien'];feed.innerHTML=posts.map((kind,i)=>`<div class="post"><div class="post-art ${kind}"><img src="./assets/${kind}.png" alt="${kind==='person'?'黑色上衣角色':'蓝帽角色'}"></div><div class="post-meta"><div class="avatar"><img src="./assets/avatar-star.png" alt=""></div><strong>Angelina</strong><div class="like ${i===1?'on':''}"><img src="./assets/${i===1?'liked':'like'}.svg" alt="">23</div></div></div>`).join('');
+    function render(){const animating=toast.classList.contains('enter');toast.className='toast '+(state.variant==='text'?'text-only ':'')+(state.status==='error'?'error ':'')+(animating?'enter':'');$('toastCopy').textContent=$('message').value.trim()||'Thanks for your report. We\'ll review this creation.';const icon=toast.querySelector('.toast-icon');icon.style.display=state.variant==='text'?'none':'';icon.src=state.status==='error'?'./assets/warning-user.svg':'./assets/success-user.svg';$('toastAction').style.display=state.variant==='action'?'':'none';$('phone').classList.toggle('large',state.device==='large');$('phoneStage').classList.toggle('large',state.device==='large');$('phone').style.width=state.device==='large'?'500px':'393px';$('phone').style.height=state.device==='large'?'760px':'852px';$('phone').style.maxWidth='none';$('phone').querySelector('.phone-screen').style.borderRadius=state.device==='large'?'28px':'36px';$('phone').style.borderRadius=state.device==='large'?'34px':'43px';$('phone').style.setProperty('--toast-max',state.device==='large'?'500px':'377px');toast.style.maxWidth=`min(100%, ${state.device==='large'?500:377}px)`;}
+    function replay(){render();toast.classList.remove('enter');void toast.offsetWidth;toast.classList.add('enter')}
+    for(const group of ['variants','statuses','devices'])$(group).addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const key=group==='variants'?'variant':group==='statuses'?'status':'device';state[key]=b.dataset[key];for(const child of $(group).querySelectorAll('button'))child.classList.toggle('active',child===b);replay()});$('message').addEventListener('input',render);$('copyToastCode').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('toastCode').textContent);$('copyToastStatus').textContent='代码已复制';}catch{$('copyToastStatus').textContent='复制失败，请手动选择代码';}setTimeout(()=>$('copyToastStatus').textContent='',2500)});$('toastAction').addEventListener('click',()=>{toast.classList.remove('enter');toast.style.opacity='0'});render();setTimeout(replay,350);setInterval(replay,5000);
+  </script>
+</body>
+</html>
