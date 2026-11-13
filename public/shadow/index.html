@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>JuJuBit · Shadows</title>
+  <style>
+    @font-face{font-family:Instrument;src:url('../typography/instrument-sans-fonts/InstrumentSans-Regular.otf') format('opentype');font-display:swap}
+    @font-face{font-family:Instrument;src:url('../typography/instrument-sans-fonts/InstrumentSans-SemiBold.otf') format('opentype');font-weight:600;font-display:swap}
+    :root{font-family:Instrument,'PingFang SC',sans-serif;color:#1d2436;background:#fff;font-synthesis:none}
+    *{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:2px solid #ff5a11;outline-offset:3px}
+    main{max-width:1480px;margin:auto;padding:52px 60px 90px}
+    .eyebrow{margin-bottom:12px;color:#ff5a11;font-size:12px;font-weight:600}
+    h1{margin:0 0 52px;font-size:clamp(40px,4vw,64px);font-weight:600;line-height:1.12;letter-spacing:-.035em}
+    h2{margin:0 0 30px;font-size:32px;font-weight:600;line-height:1.25}
+    .shadow-card{display:grid;grid-template-columns:minmax(250px,.75fr) minmax(300px,1.25fr);align-items:center;gap:48px;min-height:330px;padding:44px 50px;background:#f9f9f9;border:1px solid #f1f1f1;border-radius:18px}
+    .shadow-sample{width:251px;height:251px;max-width:100%;margin:auto;border-radius:20px;background:#fff;box-shadow:0 2px 20px 0 rgb(0 0 0 / 8%)}
+    .shadow-detail{max-width:560px}.shadow-name{margin:0 0 18px;color:#1d2436;font-size:19px;line-height:1.4}.shadow-values{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:0;color:#333;font-size:16px;line-height:1.6}.shadow-values code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#111;font-size:15px}.shadow-css{display:flex;align-items:center;gap:10px;margin-top:22px}.shadow-css code{display:block;min-width:0;overflow-wrap:anywhere;padding:10px 12px;border-radius:9px;background:#fff;color:#555;font-size:12px}.shadow-css button{flex:none;border:1px solid #ddd;border-radius:99px;background:#fff;padding:9px 15px;color:#222;font-size:12px}.shadow-css button:hover{border-color:#ff5a11;color:#ff5a11}
+    .note{margin:20px 0 0;color:#777;font-size:14px;line-height:1.6}
+    @media(max-width:850px){main{padding:40px 32px 70px}.shadow-card{grid-template-columns:1fr;gap:36px}.shadow-detail{max-width:none}}
+    @media(max-width:600px){main{padding:30px 22px 55px}h1{margin-bottom:38px}h2{font-size:27px;margin-bottom:20px}.shadow-card{padding:32px 20px}.shadow-sample{width:210px;height:210px}.shadow-name{font-size:17px}.shadow-values{font-size:14px}.shadow-css{align-items:flex-start;flex-direction:column}}
+
+    h1{font-size:36pt}
+    @media(max-width:700px){h1{font-size:16pt}}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">JUJUBIT / DESIGN SYSTEM</div>
+    <h1>Shadows</h1>
+    <section aria-labelledby="shadow-title">
+      <h2 id="shadow-title">Shadow</h2>
+      <div class="shadow-card">
+        <div class="shadow-sample" aria-label="投影效果预览"></div>
+        <div class="shadow-detail">
+          <p class="shadow-name">shadow—一级下拉菜单</p>
+          <p class="shadow-values"><span>X 0 · Y 2 · Blur 20 · Spread 0</span><code>#000000 / 8%</code></p>
+          <div class="shadow-css"><code>box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.08);</code><button type="button" id="copyShadow">复制 CSS</button></div>
+        </div>
+      </div>
+      <p class="note">具体参数根据场景自定义</p>
+    </section>
+  </main>
+  <script>
+    document.getElementById('copyShadow').addEventListener('click',async event=>{
+      const button=event.currentTarget;
+      try{await navigator.clipboard.writeText('box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.08);');button.textContent='已复制';setTimeout(()=>button.textContent='复制 CSS',1800)}
+      catch{button.textContent='复制失败';setTimeout(()=>button.textContent='复制 CSS',1800)}
+    });
+  </script>
+</body>
+</html>

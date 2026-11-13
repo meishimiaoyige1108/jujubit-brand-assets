@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JuJuBit · Avatar</title>
+  <style>
+    @font-face{font-family:Instrument;src:url('../typography/instrument-sans-fonts/InstrumentSans-Regular.otf') format('opentype');font-display:swap}
+    @font-face{font-family:Instrument;src:url('../typography/instrument-sans-fonts/InstrumentSans-SemiBold.otf') format('opentype');font-weight:600;font-display:swap}
+    :root{font-family:Instrument,'PingFang SC',sans-serif;color:#111;background:#fff;font-synthesis:none}
+    *{box-sizing:border-box}
+    body{margin:0}
+    main{max-width:1480px;margin:auto;padding:52px 60px 90px}
+    header{margin-bottom:32px}
+    .eyebrow{margin-bottom:12px;color:#ff5a11;font-size:12px;font-weight:600}
+    h1{margin:0 0 11px;font-size:34px;line-height:1.25;font-weight:600}
+    .intro{margin:0;color:#777;font-size:14px;line-height:1.6}
+    .section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:37px 0 18px}
+    h2{margin:0;font-size:19px;font-weight:600}
+    .download-all{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:42px;padding:0 20px;border-radius:999px;background:#111;color:#fff;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;transition:background .15s}
+    .download-all:hover{background:#333}
+    .download-all:focus-visible{outline:2px solid #ff5a11;outline-offset:3px}
+    .download-all svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .avatar-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border:1px solid #eceff2;border-radius:18px;overflow:hidden;background:#fff}
+    .avatar-card{min-width:0;min-height:205px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:23px;padding:22px 10px;border-right:1px solid #ebedf0;border-bottom:1px solid #ebedf0;background-color:#fff;background-image:radial-gradient(#ebedf0 1px,transparent 1px);background-size:22px 22px;background-position:10px 10px}
+    .avatar-card:nth-child(6n){border-right:0}
+    .avatar-card:nth-last-child(-n+6){border-bottom:0}
+    .avatar-card img{width:72px;height:72px;display:block;object-fit:contain;border-radius:50%;filter:drop-shadow(0 3px 5px #00000012)}
+    .avatar-card:nth-child(8) img,.avatar-card:nth-child(9) img{transform:scale(1.4)}
+    .avatar-name{max-width:100%;overflow:hidden;color:#626c7b;font-size:13px;text-align:center;white-space:nowrap;text-overflow:ellipsis}
+    @media(max-width:1120px){main{padding:45px 36px 70px}.avatar-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.avatar-card:nth-child(6n){border-right:1px solid #ebedf0}.avatar-card:nth-child(4n){border-right:0}.avatar-card:nth-last-child(-n+6){border-bottom:1px solid #ebedf0}.avatar-card:nth-last-child(-n+4){border-bottom:0}}
+    @media(max-width:700px){main{padding:30px 22px 50px}h1{font-size:28px}.avatar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.avatar-card{min-height:166px;gap:15px}.avatar-card img{width:63px;height:63px}.avatar-card:nth-child(4n){border-right:1px solid #ebedf0}.avatar-card:nth-child(3n){border-right:0}.avatar-card:nth-last-child(-n+4){border-bottom:1px solid #ebedf0}.avatar-card:nth-last-child(-n+3){border-bottom:0}}
+    @media(max-width:420px){.avatar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.avatar-card:nth-child(3n){border-right:1px solid #ebedf0}.avatar-card:nth-child(2n){border-right:0}.avatar-card:nth-last-child(-n+3){border-bottom:1px solid #ebedf0}.avatar-card:nth-last-child(-n+2){border-bottom:0}}
+
+    h1{font-size:36pt}
+    @media(max-width:700px){h1{font-size:16pt}}
+  </style>
+</head>
+<body>
+  <main>
+    <header><div class="eyebrow">JUJUBIT / BRAND ASSETS</div><h1>Avatar</h1></header>
+    <section aria-labelledby="avatar-title"><div class="section-head"><h2 id="avatar-title">品牌头像</h2><a class="download-all" href="./jujubit-avatars.zip" download="JuJuBit-avatars.zip" aria-label="一键下载全部 60 张品牌头像"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v13m0 0 5-5m-5 5-5-5M4 19v2h16v-2"/></svg>一键下载</a></div><div class="avatar-grid" id="avatarGrid"></div></section>
+  </main>
+  <script>
+    const grid=document.getElementById('avatarGrid');
+    for(let number=1;number<=60;number++){
+      const code=String(number).padStart(2,'0');
+      const card=document.createElement('article');
+      card.className='avatar-card';
+      const image=document.createElement('img');
+      image.src=`./assets/avatar-${code}.png`;
+      image.alt=`自定义头像${code}`;
+      image.loading=number<=12?'eager':'lazy';
+      image.decoding='async';
+      const name=document.createElement('span');
+      name.className='avatar-name';
+      name.textContent=`自定义头像${code}`;
+      card.append(image,name);
+      grid.append(card);
+    }
+  </script>
+</body>
+</html>

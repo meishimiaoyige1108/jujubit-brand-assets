@@ -49,9 +49,9 @@
     button.type = 'button';
     button.className = 'thumbnail';
     button.dataset.id = item.id;
-    button.setAttribute('aria-label', `选择${item.name}，${item.en}`);
+    button.setAttribute('aria-label', `Select ${item.en}`);
     button.setAttribute('aria-pressed', String(item.id === selectedId));
-    button.title = `${item.name} · ${item.en}`;
+    button.title = item.en;
     const image = document.createElement('img');
     image.src = item.thumb;
     image.alt = '';
@@ -81,14 +81,14 @@
     if (!item) return;
     const changed = selectedId !== item.id || viewer.getAttribute('src') !== item.model;
     selectedId = item.id;
-    $('title').textContent = item.name;
+    $('title').textContent = item.en;
     const index = shown.findIndex(entry => entry.id === item.id);
     $('position').textContent = `${String(index + 1).padStart(2, '0')} / ${shown.length}`;
     $('reference').src = item.image;
-    $('reference').alt = `${item.name}的 2D 参考图`;
+    $('reference').alt = `${item.en} 2D reference image`;
     $('download-model').href = item.model;
     $('download-model').download = item.model.split('/').pop();
-    viewer.setAttribute('aria-label', `${item.name}的可旋转 3D 模型`);
+    viewer.setAttribute('aria-label', `${item.en} interactive 3D model`);
     document.querySelectorAll('.thumbnail').forEach(button => {
       button.setAttribute('aria-pressed', String(Number(button.dataset.id) === item.id));
     });
